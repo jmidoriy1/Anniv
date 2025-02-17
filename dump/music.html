@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Music Player</title>
+</head>
+<body>
+<audio id="background-music" src="tyler.mp3" loop></audio>
+
+<script>
+  const music = document.getElementById('background-music');
+
+  window.addEventListener('message', (event) => {
+    if (event.data === 'toggleMusic') {
+      if (music.paused) {
+        music.play();
+        parent.postMessage('playing', '*');
+      } else {
+        music.pause();
+        parent.postMessage('paused', '*');
+      }
+    }
+  });
+
+  // Save the current time of the music to local storage
+  music.addEventListener('timeupdate', () => {
+    localStorage.setItem('musicTime', music.currentTime);
+  });
+
+  // Load the saved time from local storage and continue playing from that point
+  window.addEventListener('load', () => {
+    const savedTime = localStorage.getItem('musicTime');
+    if (savedTime) {
+      music.currentTime = savedTime;
+    }
+  });
+</script>
+</body>
+</html>

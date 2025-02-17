@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Anniversary Gift</title>
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+#content-frame {
+  width: 100%;
+  height: 100vh;
+  border: none;
+}
+
+.music-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 1.5em;
+  padding: 10px 20px;
+  border: 3px solid pink;
+  background-color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+</style>
+</head>
+<body>
+
+<iframe id="music-frame" src="music.html" style="display:none;"></iframe>
+<iframe id="content-frame" src="index.html"></iframe>
+<button class="music-button" onclick="toggleMusic()">Play Music</button>
+
+<script>
+  const musicFrame = document.getElementById('music-frame');
+  const musicButton = document.querySelector('.music-button');
+
+  function toggleMusic() {
+    musicFrame.contentWindow.postMessage('toggleMusic', '*');
+  }
+
+  window.addEventListener('message', (event) => {
+    if (event.data === 'playing') {
+      musicButton.textContent = 'Pause Music';
+    } else if (event.data === 'paused') {
+      musicButton.textContent = 'Play Music';
+    }
+  });
+</script>
+
+</body>
+</html>

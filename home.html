@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Anniversary Countdown</title>
+<style>
+body {
+  font-family: 'Arial', sans-serif; /* Define perfect font */
+  font-weight: bold; /* Make text bold */
+  color: #333; /* Change text color */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden; /* Prevent scrollbars */
+  position: relative; /* For absolute positioning of hearts */
+}
+
+.countdown {
+  font-size: 3em; /* Increase font size */
+  margin: 20px 0;
+  border: 0px solid pink;
+  padding: 20px; /* Increase padding */
+  display: inline-block;
+}
+
+.pictures-button {
+  font-size: 1.5em;
+  padding: 10px 20px;
+  border: 5px solid black;
+  background-color: #C8A2C8;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.heart {
+  width: 20px;
+  height: 20px;
+  background-color: pink;
+  transform: rotate(-45deg);
+  position: relative;
+}
+
+.heart::before,
+.heart::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: pink;
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -10px;
+  left: 0;
+}
+
+.heart::after {
+  top: 0;
+  left: 10px;
+}
+
+.back-button {
+  font-size: 1.5em;
+  padding: 10px 20px;
+  border: 0px solid pink;
+  background-color: #C8A2C8;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 1;
+  }
+}
+
+.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: pink;
+  transform: rotate(-45deg);
+  animation: float 5s infinite;
+}
+
+.heart::before,
+.heart::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: pink;
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -10px;
+  left: 0;
+}
+
+.heart::after {
+  top: 0;
+  left: 10px;
+}
+</style>
+</head>
+<body style="background-color: #C8A2C8;">
+
+<a href="index.html" class="back-button" onclick="parent.document.getElementById('content-frame').src='index.html'; return false;"><</a>
+<h1 style="font-size: 2.5em; color: #FFFFFF; text-shadow: 2px 2px 4px #000000;">Our Anniversary Countdown!</h1>
+<div class="countdown" id="countdown"></div>
+<a href="pictures.html" class="pictures-button" onclick="parent.document.getElementById('content-frame').src='pictures.html'; return false;">
+  ♡♡♡Pictures~~~
+</a>
+
+<script>
+  // Countdown timer
+  function updateCountdown() {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const targetDate = new Date(`February 18, ${currentYear} 00:00:00`);
+    if (now > targetDate) {
+      targetDate.setFullYear(currentYear + 1);
+    }
+    const diff = targetDate - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    document.getElementById('countdown').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // Create flowing hearts
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => {
+      heart.remove();
+    }, 5000);
+  }
+
+  setInterval(createHeart, 200);
+</script>
+
+</body>
+</html>

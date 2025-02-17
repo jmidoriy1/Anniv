@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Passcode Entry</title>
+<style>
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden; /* Prevent scrollbars */
+  position: relative; /* For absolute positioning of hearts */
+}
+
+.margin {
+    margin-left: 130px;
+    margin-right: 150px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.container {
+  text-align: center;
+  border: 3px solid pink;
+  padding: 20px;
+  width: 80%;
+  max-width: 800px;
+}
+
+.passcode-display {
+  font-size: 1em;
+  margin-bottom: 20px;
+  border: 3px solid pink;
+  padding: 10px;
+  min-width: 200px; 
+  height: 20px; 
+  overflow: hidden; 
+  display: flex;
+  justify-content: center; 
+  gap: 5px; 
+}
+
+.passcode-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgb(177, 132, 139);
+  display: inline-block;
+  text-align: center;
+  line-height: 20px;
+  font-size: 1em;
+  color: transparent;
+}
+
+.keypad-container {
+  display: flex;
+  align-items: center;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-gap: 10px;
+}
+
+button {
+  padding: 15px;
+  font-size: 1.2em;
+  border: 3px solid pink; /* Updated border color */
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.special-keys {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.image-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.image-container img, .image-container-bottom img {
+  width: 100px;
+  height: 100px;
+  border: 3px solid pink;
+  object-fit: cover;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 1;
+  }
+}
+
+.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: pink;
+  transform: rotate(-45deg);
+  animation: float 5s infinite;
+}
+
+.heart::before,
+.heart::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: pink;
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -10px;
+  left: 0;
+}
+
+.heart::after {
+  top: 0;
+  left: 10px;
+}
+</style>
+</head>
+<body>
+
+<!-- Passcode Section -->
+<div id="passcode-section" class="container">
+    <div class="margin">
+        
+  <h2>Enter passcode</h2>
+  <div class="passcode-display">
+    <div class="passcode-dot" id="dot1">•</div>
+    <div class="passcode-dot" id="dot2">•</div>
+    <div class="passcode-dot" id="dot3">•</div>
+    <div class="passcode-dot" id="dot4">•</div>
+  </div>  
+  <div class="keypad-container">
+    <div class="image-wrapper">
+      <div class="image-container">
+        <img src="Pictures/index-1.jpg" alt="Image">
+      </div>
+      <div class="image-container-bottom">
+        <img src="Pictures/index-2.jpg" alt="Image">
+      </div>
+    </div>
+    <div class="keypad">
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button style="grid-column
+      : 2;">0</button> <!-- Place 0 below 8 -->
+    </div>
+  </div>
+    <div class="special-keys">
+      <button>Enter</button>
+      <button>Clear</button>
+    </div>
+</div>
+</div>
+
+<!-- Home Section -->
+<div id="home-section" class="container hidden">
+  <!-- Home content goes here -->
+</div>
+
+<!-- Pictures Section -->
+<div id="pictures-section" class="container hidden">
+  <!-- Pictures content goes here -->
+</div>
+
+<script>
+  const passcodeDisplay = document.querySelector('.passcode-display');
+  const buttons = document.querySelectorAll('.keypad button');
+  const enterButton = document.querySelector('.special-keys button:nth-child(1)'); // Select Enter
+  const clearButton = document.querySelector('.special-keys button:nth-child(2)'); // Select Clear
+  const dots = document.querySelectorAll('.passcode-dot');
+  let passcode = "";
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      if (passcode.length < 4 && button.textContent >= '0' && button.textContent <= '9') {
+        passcode += button.textContent;
+        dots[passcode.length - 1].textContent = button.textContent;
+        dots[passcode.length - 1].style.color = 'black';
+        dots[passcode.length - 1].style.backgroundColor = 'transparent';
+      }
+    });
+  });
+
+  enterButton.addEventListener('click', () => {
+    if (passcode === "0218") {
+      window.location.href = "home.html"; // Redirect to home.html
+    } else {
+      alert("Incorrect passcode. Please try again.");
+      passcode = ""; // Clear the display after incorrect entry
+      dots.forEach(dot => {
+        dot.textContent = '•';
+        dot.style.color = 'transparent';
+        dot.style.backgroundColor = 'grey';
+      });
+    }
+  });
+
+  clearButton.addEventListener('click', () => {
+    passcode = "";
+    dots.forEach(dot => {
+      dot.textContent = '•';
+      dot.style.color = 'transparent';
+      dot.style.backgroundColor = 'grey';
+    });
+  });
+
+  // Create flowing hearts
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => {
+      heart.remove();
+    }, 5000);
+  }
+
+  setInterval(createHeart, 200);
+
+  // Show the passcode section by default
+  document.getElementById('passcode-section').classList.remove('hidden');
+</script>
+
+</body>
+</html>
